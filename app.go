@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/xlab/treeprint"
+)
 
 type node struct {
 	left  *node
@@ -50,6 +53,16 @@ func print(node *node, space int, ch string) {
 	print(node.left, space+2, "L")
 	print(node.right, space+2, "R")
 }
+
+func treePrint(node *node, tp treeprint.Tree) {
+	if node == nil {
+		return
+	}
+	one := tp.AddBranch(node.data)
+	treePrint(node.left, one)
+	treePrint(node.right, one)
+}
+
 func main() {
 	tree := &binaryTree{}
 	tree.insert(100)
@@ -58,5 +71,7 @@ func main() {
 	tree.insert(50)
 	tree.insert(15)
 	tree.insert(85)
-	print(tree.root, 0, "R")
+	tp := treeprint.New()
+	treePrint(tree.root, tp)
+	fmt.Println(tp.String())
 }
